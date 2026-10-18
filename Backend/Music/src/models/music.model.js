@@ -5,17 +5,20 @@ const MusicSchema= new mongoose.Schema({
         type:String,
         required:true
     },
-    Artist:{
-        type:String
+    artist:{
+        type:String,
+        required:true
     },
-    ArtistId:{
-        type:mongoose.Schema.ObjectId
+    artistId:{
+        type:mongoose.Schema.Types.ObjectId
     },
     musicKey:{
-        type:String
+        type:String,
+        required:true
     },
     coverimageKey:{
-        type:String
+        type:String,
+         required:true
     }
 },{timestamps:true})
 

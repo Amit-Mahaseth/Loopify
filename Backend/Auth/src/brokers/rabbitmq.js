@@ -10,7 +10,6 @@ export async function ConnectToRabbitMQ(){
 }
 
 export async function PublishToQueue(queueName,message){
-
     if(!channel){
         await ConnectToRabbitMQ()
     }

@@ -1,0 +1,14 @@
+# Loopify
+
+> Loopify is a music streaming application for listeners and artists.
+
+## Public account pages
+
+- [Sign in](/login): Sign in to an existing Loopify account.
+- [Create an account](/register): Register a listener or artist account.
+- [Reset a password](/forgot-password): Request a password reset.
+
+## Authenticated features
+
+Music discovery, playback, playlists, liked songs, profiles, and artist tools require an account.
+Loopify does not publish public AI agents, MCP tools, or agent APIs.

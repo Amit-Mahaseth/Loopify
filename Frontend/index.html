@@ -2,12 +2,263 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
+    <meta name="description" content="Stream music, discover artists, and manage your playlists with Loopify." />
+    <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <title>Loopify</title>
+    <style>
+      #loopify-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        align-content: center;
+        justify-items: center;
+        gap: 0;
+        overflow: hidden;
+        background:
+          radial-gradient(ellipse at 50% 42%, rgba(16, 185, 129, .12), transparent 36%),
+          radial-gradient(ellipse at 50% 100%, rgba(6, 182, 212, .06), transparent 48%),
+          #09090b;
+        color: #f8fafc;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+        opacity: 1;
+        transition: opacity 300ms ease;
+      }
+      #loopify-loader.is-exiting {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .loopify-loader-stage {
+        position: relative;
+        display: grid;
+        width: 220px;
+        height: 220px;
+        margin-bottom: 30px;
+        place-items: center;
+      }
+      .loopify-loader-orbit {
+        position: absolute;
+        inset: 3px;
+        border: 1px solid rgba(30, 215, 96, .15);
+        border-radius: 50%;
+        animation: loopify-loader-orbit 8s linear infinite;
+      }
+      .loopify-loader-orbit::before,
+      .loopify-loader-orbit::after {
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #c1f26b;
+        box-shadow: 0 0 14px 3px rgba(30, 215, 96, .55);
+        content: '';
+      }
+      .loopify-loader-orbit::before { top: 24px; left: 23px; }
+      .loopify-loader-orbit::after {
+        right: 13px;
+        bottom: 43px;
+        width: 4px;
+        height: 4px;
+        background: #06b6d4;
+        box-shadow: 0 0 12px 3px rgba(6, 182, 212, .5);
+      }
+      .loopify-loader-ripple {
+        position: absolute;
+        width: 154px;
+        height: 154px;
+        border: 1px solid rgba(30, 215, 96, .32);
+        border-radius: 50%;
+        animation: loopify-loader-ripple 2.4s ease-out infinite;
+      }
+      .loopify-loader-ripple:nth-child(4) {
+        animation-delay: 1.2s;
+      }
+      .loopify-loader-note {
+        position: absolute;
+        z-index: 1;
+        color: #c1f26b;
+        font-size: 19px;
+        text-shadow: 0 0 14px rgba(30, 215, 96, .7);
+        animation: loopify-loader-float 2.8s ease-in-out infinite;
+      }
+      .loopify-loader-note-one {
+        top: 31px;
+        right: 35px;
+      }
+      .loopify-loader-note-two {
+        bottom: 31px;
+        left: 31px;
+        color: #67e8f9;
+        font-size: 15px;
+        animation-delay: -1.4s;
+      }
+      .loopify-loader-aura {
+        position: absolute;
+        width: 178px;
+        height: 178px;
+        border-radius: 50%;
+        background: rgba(16, 185, 129, .12);
+        filter: blur(28px);
+        animation: loopify-loader-breathe 2s ease-in-out infinite alternate;
+      }
+      .loopify-loader-record {
+        position: relative;
+        display: grid;
+        width: 154px;
+        height: 154px;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, .12);
+        border-radius: 50%;
+        background:
+          radial-gradient(circle, transparent 0 25%, rgba(255,255,255,.07) 25.5%, transparent 26% 38%, rgba(255,255,255,.06) 38.5%, transparent 39% 52%, rgba(255,255,255,.05) 52.5%, transparent 53% 66%, rgba(255,255,255,.05) 66.5%, transparent 67%),
+          conic-gradient(from 20deg, #25262c, #101115 18%, #202127 34%, #0d0e12 52%, #25262c 70%, #111216 86%, #25262c);
+        box-shadow:
+          0 0 0 8px rgba(255, 255, 255, .025),
+          0 0 38px rgba(16, 185, 129, .2),
+          inset 0 0 22px rgba(0, 0, 0, .75);
+        animation: loopify-loader-spin 4s linear infinite;
+      }
+      .loopify-loader-record::before {
+        position: absolute;
+        inset: 6px;
+        border: 1px solid rgba(255, 255, 255, .08);
+        border-radius: inherit;
+        content: '';
+      }
+      .loopify-loader-label {
+        display: grid;
+        width: 62px;
+        height: 62px;
+        place-items: center;
+        border: 1px solid rgba(193, 242, 107, .55);
+        border-radius: 50%;
+        background: linear-gradient(145deg, #143c2d, #0c201a 72%);
+        box-shadow: 0 0 22px rgba(30, 215, 96, .3), inset 0 0 12px rgba(30, 215, 96, .18);
+      }
+      .loopify-loader-label svg {
+        width: 37px;
+        height: 37px;
+        overflow: visible;
+      }
+      .loopify-loader-loop {
+        fill: none;
+        stroke: #8df7b6;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        stroke-linecap: round;
+        stroke-width: .095;
+        animation: loopify-loader-draw 1.6s ease-in-out infinite alternate;
+      }
+      .loopify-loader-center {
+        fill: #c1f26b;
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: loopify-loader-pulse .9s ease-in-out infinite alternate;
+      }
+      .loopify-loader-brand {
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -1.4px;
+      }
+      .loopify-loader-brand span { color: #1ed760; }
+      .loopify-loader-wave {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        height: 28px;
+        margin-top: 21px;
+        color: #1ed760;
+      }
+      .loopify-loader-wave i {
+        display: block;
+        width: 3px;
+        height: 5px;
+        border-radius: 3px;
+        background: currentColor;
+        box-shadow: 0 0 8px rgba(30, 215, 96, .45);
+        animation: loopify-loader-beat 700ms ease-in-out infinite alternate;
+      }
+      .loopify-loader-wave i:nth-child(2),
+      .loopify-loader-wave i:nth-child(8) { animation-delay: 100ms; }
+      .loopify-loader-wave i:nth-child(3),
+      .loopify-loader-wave i:nth-child(7) { animation-delay: 200ms; }
+      .loopify-loader-wave i:nth-child(4),
+      .loopify-loader-wave i:nth-child(6) { animation-delay: 300ms; }
+      .loopify-loader-wave i:nth-child(5) { animation-delay: 400ms; }
+      .loopify-loader-caption {
+        color: #a1a1aa;
+        font-size: 12px;
+        letter-spacing: .13em;
+        text-transform: uppercase;
+      }
+      @keyframes loopify-loader-spin { to { transform: rotate(1turn); } }
+      @keyframes loopify-loader-orbit { to { transform: rotate(-1turn); } }
+      @keyframes loopify-loader-ripple {
+        0% { opacity: 0; transform: scale(.72); }
+        25% { opacity: .45; }
+        100% { opacity: 0; transform: scale(1.38); }
+      }
+      @keyframes loopify-loader-float {
+        0%, 100% { opacity: .55; transform: translateY(5px) rotate(-12deg); }
+        50% { opacity: 1; transform: translateY(-7px) rotate(12deg); }
+      }
+      @keyframes loopify-loader-breathe {
+        to { opacity: .45; transform: scale(.82); }
+      }
+      @keyframes loopify-loader-draw {
+        to { stroke-dashoffset: 0; }
+      }
+      @keyframes loopify-loader-pulse {
+        to { opacity: .55; transform: scale(.72); }
+      }
+      @keyframes loopify-loader-beat {
+        0% { transform: scaleY(1); opacity: .55; }
+        100% { transform: scaleY(4.5); opacity: 1; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #loopify-loader { transition-duration: 1ms; }
+        .loopify-loader-orbit,
+        .loopify-loader-ripple,
+        .loopify-loader-note,
+        .loopify-loader-aura,
+        .loopify-loader-record,
+        .loopify-loader-loop,
+        .loopify-loader-center,
+        .loopify-loader-wave i { animation: none; }
+      }
+      @media (max-width: 420px) {
+        .loopify-loader-stage { transform: scale(.88); margin-bottom: 18px; }
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <div id="loopify-loader" role="status" aria-live="polite" aria-label="Loading Loopify">
+      <div class="loopify-loader-stage" aria-hidden="true">
+        <div class="loopify-loader-aura"></div>
+        <div class="loopify-loader-orbit"></div>
+        <div class="loopify-loader-ripple"></div>
+        <div class="loopify-loader-ripple"></div>
+        <span class="loopify-loader-note loopify-loader-note-one">♫</span>
+        <span class="loopify-loader-note loopify-loader-note-two">♪</span>
+        <div class="loopify-loader-record">
+          <div class="loopify-loader-label">
+            <svg viewBox="0 0 1 1" aria-hidden="true">
+              <path class="loopify-loader-loop" pathLength="1" d="M.31 .35C.2 .35 .16 .42 .16 .5s.06 .15 .15 .15C.42 .65 .5 .5 .5 .5S.58 .35 .69 .35c.09 0 .15 .07 .15 .15s-.06 .15-.15 .15C.58 .65 .5 .5 .5 .5S.42 .35 .31 .35Z" />
+              <circle class="loopify-loader-center" cx=".5" cy=".5" r=".035" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="loopify-loader-brand">Loop<span>ify</span></div>
+      <div class="loopify-loader-wave" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <div class="loopify-loader-caption">Tuning your next loop</div>
+    </div>
+    <script type="module" src="/src/app/main.jsx"></script>
   </body>
 </html>

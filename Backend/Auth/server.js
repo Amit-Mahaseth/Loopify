@@ -4,8 +4,12 @@ dns.setServers(['8.8.8.8', '1.1.1.1'])
 import app from './src/app.js'
 import ConnectToDB from './src/db/db.js'
 import { ConnectToRabbitMQ } from './src/brokers/rabbitmq.js'
+import redisClient from "./src/db/redis.js"
 
-ConnectToRabbitMQ()
+await ConnectToRabbitMQ()
+await redisClient.connect()
+console.log("Redis Connected Successfully");
+
 try {
   await ConnectToDB()
   app.listen(3000, () => {

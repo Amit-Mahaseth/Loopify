@@ -18,11 +18,21 @@ const AuthSchema=new  mongoose.Schema({
         googleid:{
         type:String
     },
+    profileImage:{
+        type:String,
+        default:''
+    },
     password: {
         type:String,
         required:function(){
             return !this.googleid
         }
+    },
+    resetPasswordOTP:{
+type:String
+    },
+    resetPasswordOTPExpires:{
+type:Date
     },
     role:{
         type:String,

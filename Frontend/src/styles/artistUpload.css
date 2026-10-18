@@ -1,0 +1,287 @@
+/* ══════════════════════════════════════
+   LOOPIFY — artistUpload.css
+   Modern Black & Emerald Theme
+   ══════════════════════════════════════ */
+
+.music-upload-page {
+  padding-bottom: 80px;
+}
+
+.music-upload-page .artist-dashboard-header {
+  max-width: 1160px;
+}
+
+.music-upload-page .artist-dashboard-header > .brand {
+  text-decoration: none;
+}
+
+.music-upload-page .artist-dashboard-header > .artist-text-link {
+  margin-left: auto;
+  padding-right: 0;
+}
+
+.music-upload-card {
+  width: min(100%, 650px);
+  margin: 48px auto 0;
+  padding: clamp(22px, 4vw, 38px);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-panel);
+  box-shadow: 0 20px 65px rgba(0, 0, 0, .3);
+}
+
+.music-upload-card > .eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.music-upload-card > h1 {
+  margin: 0;
+  color: var(--color-text);
+  font: 700 clamp(27px, 4vw, 36px)/1.2 var(--font-display);
+  letter-spacing: -1.2px;
+}
+
+.music-upload-card > p {
+  margin: 10px 0 26px;
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.music-upload-form {
+  display: grid;
+  gap: 19px;
+}
+
+.music-upload-form > label,
+.music-upload-form .file-field,
+.playlist-selector {
+  display: grid;
+  min-width: 0;
+  gap: 9px;
+}
+
+.music-upload-form > label,
+.music-upload-form .file-field > span,
+.playlist-selector > span {
+  color: #e5e7eb;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.music-upload-form > label > input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  outline: none;
+  background: var(--color-panel-raised);
+  color: var(--color-text);
+  font-size: 13px;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+
+.music-upload-form > label > input::placeholder {
+  color: #6b7280;
+}
+
+.music-upload-form > label > input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(30, 215, 96, .15);
+}
+
+.file-field > span small {
+  color: var(--color-muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.file-picker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 94px;
+  border: 1px dashed var(--color-border);
+  border-radius: 12px;
+  background: var(--color-panel-raised);
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+
+.file-picker:hover,
+.file-picker:focus-within {
+  border-color: var(--color-accent);
+  background: #1c1c22;
+}
+
+.file-picker input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-picker > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.selected-file {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-panel-raised);
+}
+
+.selected-file-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(30, 215, 96, .12);
+  color: var(--color-accent);
+  font-size: 15px;
+}
+
+.selected-file-icon svg {
+  display: block;
+}
+
+.selected-file strong {
+  flex: 1;
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selected-file button {
+  padding: 5px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-muted);
+  font-size: 11px;
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+}
+
+.selected-file button:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.upload-button {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.upload-feedback {
+  margin: 0;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.upload-feedback-success {
+  border: 1px solid rgba(30, 215, 96, .25);
+  background: rgba(30, 215, 96, .08);
+  color: #1ed760;
+}
+
+.upload-feedback-error {
+  border: 1px solid rgba(239, 68, 68, .25);
+  background: rgba(239, 68, 68, .08);
+  color: #f87171;
+}
+
+@media (max-width: 650px) {
+  .music-upload-card {
+    margin-top: 24px;
+    padding: 20px;
+  }
+}
+
+/* ══════════════════════════════════════
+   LIGHT THEME OVERRIDES
+   ══════════════════════════════════════ */
+.light-theme .music-upload-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+}
+
+.light-theme .music-upload-form > label > input {
+  background: #f9fafb;
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #111827;
+}
+
+.light-theme .music-upload-form > label > input::placeholder {
+  color: #4b5563;
+}
+
+.light-theme .music-upload-form > label > input:focus {
+  border-color: #10b981;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, .12);
+}
+
+.light-theme .music-upload-form > label,
+.light-theme .music-upload-form .file-field > span,
+.light-theme .playlist-selector > span {
+  color: #374151;
+}
+
+.light-theme .file-picker {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: #f9fafb;
+}
+
+.light-theme .file-picker:hover,
+.light-theme .file-picker:focus-within {
+  border-color: #10b981;
+  background: #ffffff;
+}
+
+.light-theme .file-picker > span {
+  color: #047857;
+}
+
+.light-theme .selected-file {
+  background: #f9fafb;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.light-theme .selected-file strong {
+  color: #111827;
+}
+
+.light-theme .selected-file button {
+  color: #4b5563;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.light-theme .selected-file button:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.light-theme .selected-file-icon {
+  background: rgba(16, 185, 129, .1);
+  color: #047857;
+}

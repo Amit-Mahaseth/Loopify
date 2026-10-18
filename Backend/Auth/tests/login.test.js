@@ -15,7 +15,6 @@ test('POST /api/auth/login authenticates a user and returns a token cookie', asy
   mocks.findOne.mockResolvedValue(user)
   mocks.compare.mockResolvedValue(true)
   mocks.sign.mockReturnValue('signed-token')
-  mocks.publish.mockResolvedValue(undefined)
 
   const response = await request('/api/auth/login', {
     method: 'POST',
@@ -29,5 +28,17 @@ test('POST /api/auth/login authenticates a user and returns a token cookie', asy
   expect(body.user).toMatchObject({email: user.email})
   expect(response.headers.get('set-cookie')).toContain('token=signed-token')
   expect(mocks.compare).toHaveBeenCalledWith('password123', 'hashed-password')
-  expect(mocks.publish).toHaveBeenCalledWith('user_logged_in', expect.any(Object))
+  expect(mocks.publish).not.toHaveBeenCalled()
+})
+
+test('POST /api/auth/login returns unauthorized for invalid credentials', async () => {
+  mocks.findOne.mockResolvedValue(null)
+
+  const response = await request('/api/auth/login', {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({email: 'person@example.com', password: 'wrong-password'})
+  })
+
+  expect(response.status).toBe(401)
 })

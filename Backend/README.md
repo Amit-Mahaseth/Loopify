@@ -1,108 +1,43 @@
-# Loopify
+# Loopify Backend
 
-Loopify is a Node.js application currently split into two services: an authentication API and a notification service. The services communicate through RabbitMQ. This document is the project documentation index and should be updated whenever the codebase or a feature changes.
+The backend contains three independent Node.js ES module services. Install and run each service from its own directory.
 
-## Repository structure
+## Services
 
-```text
-Loopify/
-├── read.md                     # Project overview, service map, and documentation rules
-├── Auth/                       # Authentication API service
-│   ├── server.js               # Service startup and dependency connections
-│   ├── package.json            # Scripts and dependencies
-│   ├── src/
-│   │   ├── app.js              # Express middleware, Passport, and route registration
-│   │   ├── brokers/            # RabbitMQ connection and message publishing
-│   │   ├── config/             # Environment configuration
-│   │   ├── controllers/        # Authentication request handlers
-│   │   ├── db/                 # MongoDB connection
-│   │   ├── middlewares/        # Authentication, validation, and rate limiting
-│   │   ├── models/             # Authentication data models
-│   │   └── routes/             # Authentication HTTP endpoints
-│   └── tests/                  # Authentication tests and test helpers
-└── Notification/               # Email notification service
-    ├── server.js               # Service startup and listener initialization
-    ├── package.json            # Scripts and dependencies
-    └── src/
-        ├── app.js              # Express application
-        ├── brokers/            # RabbitMQ connection, consumer, and event handling
-        ├── config/             # Environment configuration
-        └── utils/               # Email delivery helper
-```
+| Service | Default port | Responsibility |
+| --- | ---: | --- |
+| Auth | 3000 | Registration, login, Google OAuth, password recovery, profiles, and JWT cookies; publishes registration events |
+| Music | 3002 | Music catalog, artist uploads, playlists, S3 media storage, and Socket.IO playback synchronization |
+| Notification | 3001 | Consumes registration events from RabbitMQ and sends welcome email |
 
-`node_modules/`, package lock files, and local `.env` files are omitted from the tree because they are generated, dependency metadata, or machine-specific configuration. Never add secret values to this document or commit real credentials.
+## Prerequisites
 
-## Services and current behavior
+- Node.js and npm
+- MongoDB for Auth and Music
+- RabbitMQ for Auth and Notification
+- An AWS account and S3 bucket named `loopify-bucket` for music storage
+- Google OAuth credentials for Google sign-in; Gmail OAuth credentials for email
 
-### Auth
+## Environment setup
 
-- Express API, started by `Auth/server.js` on port `3000`.
-- Connects to MongoDB and RabbitMQ at startup.
-- Routes are mounted under `/api/auth`.
-- Current routes include registration, login, Google OAuth initiation, and Google OAuth callback (`Auth/src/routes/auth.routes.js`).
-- Uses request validation and rate-limiting middleware. Authentication events are published through RabbitMQ by the service broker.
-- Jest tests live under `Auth/tests/`.
+Each service has an `.env.example`. Copy it to `.env` in that service directory and replace the example values with local credentials. Never commit `.env` files.
 
-### Notification
+- **Auth:** MongoDB URI, JWT secret, Google OAuth client ID/secret and callback URL, frontend redirect URL, RabbitMQ URI, and email account/refresh token. Auth configuration can also read `REDIS_URI` if Redis is configured.
+- **Music:** MongoDB URI, JWT secret, AWS access ID, AWS secret access key, and AWS region.
+- **Notification:** RabbitMQ URI and email account/Google refresh token. Its sample also lists Google OAuth configuration values.
 
-- Email notification worker, started by `Notification/server.js`; its Express app currently has no routes.
-- Connects to RabbitMQ and listens for `user_registered` and `user_logged_in` messages.
-- Builds and sends email notifications using the email utility.
+See each service's `.env.example` for variable names and local examples. Configure the Google callback as `http://localhost:3000/api/auth/google/callback` for local development and register the same URL with the Google OAuth client.
 
-### Message flow
+## Install and start
 
-```text
-Auth API ── publishes event ──> RabbitMQ ── delivers event ──> Notification worker ──> Email provider
-```
-
-Queue names and payload schemas are part of the service contract. When changing an event, update the publisher, consumer, and documentation together.
-
-## Local development
-
-Use a supported Node.js release and ensure MongoDB, RabbitMQ, and the configured email provider are available. Install dependencies in each service directory:
+From a separate terminal for each service:
 
 ```powershell
-cd Auth
+cd Backend/Auth
 npm install
 npm run dev
 ```
 
-In a separate terminal, run the notification service:
+Repeat from `Backend/Music` and `Backend/Notification`. `npm start` runs a service without nodemon. Auth and Music have Jest test scripts; Notification's test script is currently a placeholder.
 
-```powershell
-cd Notification
-npm install
-npm run dev
-```
-
-Run the authentication test suite from `Auth/` with `npm test`. The Notification package currently has no configured test suite.
-
-## Configuration
-
-Create local `.env` files in the service directories. Keep actual values private and use a secrets manager or deployment environment for production. Configuration keys currently read by the code are:
-
-| Service | Environment keys |
-| --- | --- |
-| Auth | `MONGO_URI`, `JWT_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_CALLBACK_URL`, `RABBITMQ_URI` |
-| Notification | `JWT_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_CALLBACK_URL`, `GOOGLE_REFRESH_TOKEN`, `EMAIL_USER`, `RABBITMQ_URI` |
-
-Document the purpose and required status of new configuration keys here when adding them. Do not document secret values.
-
-## Documentation maintenance standard
-
-Keep this file accurate as code changes. For every feature or structural change:
-
-1. Update the repository tree when files or folders are added, removed, or moved.
-2. Record the feature under the owning service, including its responsibility and relevant entry points.
-3. Document changed API routes, event names, queue payload fields, configuration keys, and user-visible behavior where applicable.
-4. Update setup or run instructions if commands, ports, dependencies, or service requirements change.
-5. Keep examples free of credentials and use consistent Markdown headings, lists, tables, and fenced code blocks.
-6. Remove stale documentation when behavior is deleted or replaced.
-
-For substantial features, add a focused document under a service-specific `docs/` directory and link it here. Keep detailed API, event, and operational references close to their owning service; use this file as the concise project index.
-
-## Known documentation follow-ups
-
-- Add an API reference with request and response schemas, status codes, and authentication requirements.
-- Define RabbitMQ event payload schemas and delivery/retry behavior.
-- Document deployment, health checks, logging, and production configuration once those conventions are established.
+The frontend proxies Auth at port `3000`, Music at port `3002`, and Music Socket.IO at port `3002` during development. See the [frontend guide](../Frontend/README.md) for setup.

@@ -28,10 +28,26 @@ test('POST /api/auth/register creates a user and returns a token cookie', async 
   })
   const body = await response.json()
 
-  expect(response.status).toBe(200)
+  expect(response.status).toBe(201)
   expect(body.msg).toBe('Registration Successfully..')
   expect(body.user.user).toMatchObject(user)
   expect(response.headers.get('set-cookie')).toContain('token=signed-token')
   expect(mocks.hash).toHaveBeenCalledWith('password123', 10)
   expect(mocks.publish).toHaveBeenCalledWith('user_registered', expect.any(Object))
+})
+
+test('POST /api/auth/register returns conflict when the email is already registered', async () => {
+  mocks.findOne.mockResolvedValue({_id: 'existing-user', email: 'person@example.com'})
+
+  const response = await request('/api/auth/register', {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({
+      email: 'person@example.com',
+      password: 'password123',
+      Fullname: {firstname: 'Test', lastname: 'Person'}
+    })
+  })
+
+  expect(response.status).toBe(409)
 })

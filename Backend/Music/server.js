@@ -1,7 +1,18 @@
+import dns from 'dns'
+dns.setServers(['8.8.8.8', '1.1.1.1'])
+
 import app from './src/app.js'
+import ConnectToDB from './src/db/db.js'
+import InitateSocketServer from './src/Sockets/socket.server.js'
+import http from 'http'
+
+const httpserver=http.createServer(app)
+InitateSocketServer(httpserver)
+ConnectToDB()
 
 
+ 
 
-app.listen(3003,()=>{
-    console.log('Server is Running on Port 3003')
+httpserver.listen(3002,()=>{
+    console.log('Server is Running on Port 3002')
 })
