@@ -1,5 +1,3 @@
-import dns from 'dns'
-dns.setServers(['8.8.8.8', '1.1.1.1'])
 
 import app from './src/app.js'
 import ConnectToDB from './src/db/db.js'
@@ -13,6 +11,6 @@ ConnectToDB()
 
  
 
-httpserver.listen(3002,()=>{
+httpserver.listen(3002,"0.0.0.0",()=>{
     console.log('Server is Running on Port 3002')
 })

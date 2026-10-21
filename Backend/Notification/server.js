@@ -6,6 +6,6 @@ ConnectToRabbitMQ().then(StartListener).catch((err)=>{
     console.error('Error connecting to RabbitMQ:', err)
 })
 
-app.listen(3001,()=>{
+app.listen(3001,"0.0.0.0",()=>{
     console.log('Notification Service is Running on Port 3001')
 })

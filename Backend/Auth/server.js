@@ -1,5 +1,3 @@
-import dns from 'dns'
-dns.setServers(['8.8.8.8', '1.1.1.1'])
 
 import app from './src/app.js'
 import ConnectToDB from './src/db/db.js'
@@ -12,7 +10,7 @@ console.log("Redis Connected Successfully");
 
 try {
   await ConnectToDB()
-  app.listen(3000, () => {
+  app.listen(3000,"0.0.0.0", () => {
     console.log('Auth Server is running on port 3000')
   })
 } catch (error) {

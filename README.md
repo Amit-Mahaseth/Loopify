@@ -68,6 +68,6 @@ Open the Vite URL, normally `http://localhost:5173`. The development proxy forwa
 - [Frontend setup and architecture](Frontend/README.md)
 - [Backend services and configuration](Backend/README.md)
 
-## License and author
+## Project
 
-This project is available under the [ISC License](LICENSE). Maintained by [Amit Mahaseth](https://github.com/Amit-Mahaseth); visit [Amit-Mahaseth/Loopify](https://github.com/Amit-Mahaseth/Loopify) for the repository.
+Maintained by [Amit Mahaseth](https://github.com/Amit-Mahaseth). Visit [Amit-Mahaseth/Loopify](https://github.com/Amit-Mahaseth/Loopify) for the repository.

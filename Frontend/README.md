@@ -25,7 +25,7 @@ Open the local URL printed by Vite, normally `http://localhost:5173`. Auth and M
 
 ## Environment variables
 
-No frontend environment variables are required by the current application. `vite.config.js` contains the development proxy targets. `.env.example` is retained as an example; its optional URL values are not currently read by the frontend or Vite configuration. Do not put secrets in Vite-exposed variables.
+No frontend environment variables are required for local development. The optional `VITE_AUTH_API_URL` and `VITE_MUSIC_API_URL` variables override the Vite development proxy targets; do not put secrets in Vite-exposed variables.
 
 ## Development proxy
 
@@ -33,11 +33,11 @@ The Vite development server proxies these paths to local backend services:
 
 | Path | Target |
 | --- | --- |
-| `/api/auth` | `http://localhost:3000` (Auth) |
-| `/api/music` | `http://localhost:3002` (Music) |
-| `/socket.io` | `http://localhost:3002` (Music, WebSocket enabled) |
+| `/api/auth` | `VITE_AUTH_API_URL` or `http://localhost:3000` (Auth) |
+| `/api/music` | `VITE_MUSIC_API_URL` or `http://localhost:3002` (Music) |
+| `/socket.io` | `VITE_MUSIC_API_URL` or `http://localhost:3002` (Music, WebSocket enabled) |
 
-These are development proxy settings, not a production reverse proxy.
+These are development proxy settings, not a production reverse proxy. Docker Compose sets the targets to `http://auth:3000` and `http://music:3002`; when running Vite directly on the host, the defaults use the locally exposed ports.
 
 ## Source structure
 
