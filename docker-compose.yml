@@ -3,7 +3,7 @@ services:
   auth:
     build:
       context: ./Backend/Auth
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
       - "3000:3000"
     env_file:
@@ -13,7 +13,7 @@ services:
   notification:
     build:
       context: ./Backend/Notification
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
       - "3001:3001"
     env_file:
@@ -23,7 +23,7 @@ services:
   music:
     build:
       context: ./Backend/Music
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
       - "3002:3002"
     env_file:
@@ -33,12 +33,11 @@ services:
   frontend:
     build:
       context: ./Frontend
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
-      - "5173:5173"
+      - "5173:10000"
     environment:
       VITE_AUTH_API_URL: http://auth:3000
-      VITE_NOTIFICATION_API_URL: http://localhost:3001
       VITE_MUSIC_API_URL: http://music:3002
     depends_on:
       - auth

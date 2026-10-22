@@ -22,8 +22,8 @@ The backend contains three independent Node.js ES module services. Install and r
 
 Each service has an `.env.example`. Copy it to `.env` in that service directory and replace the example values with local credentials. Never commit `.env` files.
 
-- **Auth:** MongoDB URI, JWT secret, Google OAuth client ID/secret and callback URL, frontend redirect URL, RabbitMQ URI, and email account/refresh token. Auth configuration can also read `REDIS_URI` if Redis is configured.
-- **Music:** MongoDB URI, JWT secret, AWS access ID, AWS secret access key, and AWS region.
+- **Auth:** MongoDB URI, Redis URI, JWT secret, Google OAuth client ID/secret and callback URL, frontend redirect URL, RabbitMQ URI, and email account/refresh token. MongoDB, Redis, and RabbitMQ must be reachable before Auth starts.
+- **Music:** MongoDB URI, JWT secret, AWS access ID, AWS secret access key, AWS region, and the frontend origin (`FRONTEND_URL`) for CORS and Socket.IO.
 - **Notification:** RabbitMQ URI and email account/Google refresh token. Its sample also lists Google OAuth configuration values.
 
 See each service's `.env.example` for variable names and local examples. Configure the Google callback as `http://localhost:3000/api/auth/google/callback` for local development and register the same URL with the Google OAuth client.

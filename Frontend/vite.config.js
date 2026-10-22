@@ -10,8 +10,9 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
-      host: true,
-      proxy: {
+  host: true,
+  allowedHosts: ['loopify-frontend.onrender.com'],
+  proxy: {
         '/api/auth': {
           target: authTarget,
           changeOrigin: true,

@@ -37,7 +37,7 @@ export async function UploadMusic(req, res) {
         return res.status(201).json({ msg: 'Music uploaded successfully', music })
     } catch (err) {
         console.error('Music upload failed:', err)
-        return res.status(500).json({ msg: 'Internal server error' })
+        throw err
     }
 }
 
@@ -57,7 +57,7 @@ export async function GetArtistMusic(req, res) {
         return res.status(200).json({ msg: 'Music fetched successfully', musics })
     } catch (err) {
         console.error('Fetching artist music failed:', err)
-        return res.status(500).json({ msg: 'Internal server error' })
+        throw err
     }
 }
 
@@ -81,7 +81,7 @@ export async function CreatePlaylist(req, res) {
         })
     } catch (err) {
         console.error('Playlist creation failed:', err)
-        return res.status(500).json({ msg: 'Internal server error' })
+        throw err
     }
 }
 
@@ -97,7 +97,7 @@ export async function GetAllMusic(req, res) {
         return res.status(200).json({msg:'Music fetched successfully',musics})
     }catch(err){
         console.error('Fetching music failed:', err)
-        return res.status(500).json({ msg: 'Internal server error' })
+        throw err
     }
 }
 export async function GetMusicById(req,res){
@@ -110,10 +110,7 @@ try{
     })
 
 }catch(err){
-    console.log('Error',err)
-    return res.status(500).json({
-        msg:"Internal server error"
-    })
+    throw err
 }
 }
 
@@ -128,7 +125,7 @@ export async function GetPlaylist(req,res){
         return res.status(200).json({msg:'Playlists fetched successfully',playlists})
     }catch(err){
         console.error('Fetching playlist failed:', err)
-        return res.status(500).json({ msg: 'Internal server error' })
+        throw err
     }
 }
 
@@ -147,7 +144,7 @@ export async function GetArtistPlaylists(req, res) {
         return res.status(200).json({ msg: 'Artist playlists fetched successfully', playlists })
     } catch (err) {
         console.error('Fetching artist playlists failed:', err)
-        return res.status(500).json({ msg: 'Internal server error' })
+        throw err
     }
 }
 
@@ -160,6 +157,6 @@ if (data?.coverImageKey) data.coverImageUrl=await PresignedUrl(data.coverImageKe
 return res.status(200).json({msg:'Playlist fetched successfully',playlist:data})
     }catch(err){
         console.error('Fetching playlist by ID failed:', err)
-        return res.status(500).json({ msg: 'Internal server error' })
+        throw err
     }
 }

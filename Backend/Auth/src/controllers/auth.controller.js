@@ -17,7 +17,6 @@ export async function RegisterUser(req, res) {
                 msg: 'email, password and firstname are required'
             })
         }
-        console.log('Register request received')
         const isuserExist = await AuthModel.findOne(
             { email }
         )
@@ -74,11 +73,7 @@ export async function RegisterUser(req, res) {
         })
     }
     catch (err) {
-        return res.status(500).json({
-            msg: "Internal Server Error",
-            error: err
-
-        })
+        throw err
     }
 }
 
@@ -105,11 +100,6 @@ export async function GoogleAuthCallback(req, res) {
                 )
             }
 
-            try {
-   
-            } catch (error) {
-                console.error('Could not publish Google login event:', error.message)
-            }
             const token = JWT.sign({
                 id: isUserExist._id,
                 email: isUserExist.email,
@@ -168,15 +158,13 @@ export async function GoogleAuthCallback(req, res) {
             })
         } catch (error) {
             console.error('Could not publish Google registration event:', error.message)
+            throw error
         }
 
         return res.redirect(config.FRONTEND_URL)
 
     } catch (err) {
-        return res.status(500).json({
-            msg: "Internal Server Error",
-            error: err.message
-        })
+        throw err
     }
 }
 
@@ -184,7 +172,6 @@ export async function LoginUser(req, res) {
     try {
         const { email, password } = req.body
         const user = await AuthModel.findOne({ email })
-        console.log(user)
         if (!user) {
             return res.status(401).json({
                 msg: "invalid email or password"
@@ -229,11 +216,7 @@ export async function LoginUser(req, res) {
         })
     }
     catch (err) {
-        // console.log(err)
-        return res.status(500).json({
-            msg: "internal server error ",
-            err:err.message
-        })
+        throw err
     }
 }
 
@@ -254,9 +237,7 @@ try{
     }   )                                                                                                                                                                   
 
 }catch(err){
-    return res.status(500).json({
-        msg:"Internal server error"
-    })
+    throw err
 }
     
 }
@@ -291,8 +272,8 @@ export async function AuthStatus(req, res) {
                 profileImage
             },
         })
-    } catch {
-        return res.status(500).json({ authenticated: false, msg: 'Unable to check authentication status.' })
+    } catch (err) {
+        throw err
     }
 }
 
@@ -333,10 +314,7 @@ export async function GetUser(req, res) {
             }
         })
     } catch (err) {
-        return res.status(500).json({
-            msg: "Internal Server Error",
-            error: err
-        })
+        throw err
     }
 }
 
@@ -396,7 +374,7 @@ export async function UpdateUser(req, res) {
         })
     }
     catch (err) {
-        return res.status(500).json({ msg: 'Unable to update profile', error: err.message })
+        throw err
     }
 }
 
@@ -442,10 +420,7 @@ if(remainingSecond>0){
         })
 
     } catch (err) {
-        return res.status(500).json({
-            msg: "Internal server Error",
-            errors: err
-        })
+        throw err
     }
 }
 
@@ -464,7 +439,7 @@ export async function ForgotPassword(req, res) {
         return res.status(200).json({ success: true, msg: 'OTP sent to your email.' })
     } catch (error) {
         console.error('Password reset email failed:', error.message)
-        return res.status(500).json({ success: false, msg: 'Could not send the reset code. Please try again.' })
+        throw error
     }
 }
 
@@ -485,7 +460,7 @@ export async function VerifyResetOTP(req, res) {
 
         return res.status(200).json({ success: true, msg: 'Code verified.' })
     } catch (error) {
-        return res.status(500).json({ success: false, msg: 'Unable to verify the reset code right now.' })
+        throw error
     }
 }
 
@@ -510,8 +485,6 @@ export async function ResetPassword(req, res) {
         await user.save()
         return res.status(200).json({ success: true, msg: 'Password reset successfully. You can now log in with your new password.' })
     } catch (error) {
-
-
-        return res.status(500).json({ success: false, msg: 'Unable to reset password right now.' })
+        throw error
     }
 }

@@ -6,7 +6,6 @@ let connection,channel;
 export async function ConnectToRabbitMQ(){
     connection=await amqp.connect(config.RABBITMQ_URI)
     channel=await connection.createChannel()
-    console.log('Connected To RabbitMQ')
 }
 
 export async function PublishToQueue(queueName,message){

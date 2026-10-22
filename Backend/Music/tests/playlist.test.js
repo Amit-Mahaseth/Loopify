@@ -80,3 +80,10 @@ test('rejects artist playlist requests without an authenticated artist', async (
   expect(res.json).toHaveBeenCalledWith({ msg: 'Invalid artist session' })
   expect(PlaylistModel.find).not.toHaveBeenCalled()
 })
+
+test('rethrows playlist query errors for centralized error handling', async () => {
+  const error = new Error('database unavailable')
+  PlaylistModel.find.mockRejectedValue(error)
+
+  await expect(GetArtistPlaylists({ user: { id: 'artist-123' } }, createResponse())).rejects.toBe(error)
+})

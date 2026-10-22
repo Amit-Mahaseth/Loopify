@@ -12,12 +12,17 @@ app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
 app.use(limiter.GlobalLimiter)
 app.use(cors({
-  origin:'http://localhost:5173',
+  origin: config.FRONTEND_URL,
   credentials:true
 }))
 app.use(passport.initialize());
 
 app.use('/api/auth', AuthRoutes)
+app.use((err, req, res, next) => {
+  console.error('Unhandled Auth request error:', err)
+  if (res.headersSent) return next(err)
+  return res.status(500).json({ msg: 'Internal Server Error' })
+})
 
 passport.use(new GoogleStrategy({
   clientID: config.GOOGLE_CLIENT_ID,

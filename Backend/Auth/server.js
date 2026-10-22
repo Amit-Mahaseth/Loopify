@@ -4,16 +4,12 @@ import ConnectToDB from './src/db/db.js'
 import { ConnectToRabbitMQ } from './src/brokers/rabbitmq.js'
 import redisClient from "./src/db/redis.js"
 
-await ConnectToRabbitMQ()
-await redisClient.connect()
-console.log("Redis Connected Successfully");
-
 try {
+  await ConnectToRabbitMQ()
+  await redisClient.connect()
   await ConnectToDB()
-  app.listen(3000,"0.0.0.0", () => {
-    console.log('Auth Server is running on port 3000')
-  })
-} catch (error) {
-  console.error('MongoDB connection failed:', error.message)
-  process.exit(1)
+  app.listen(3000,"0.0.0.0")
+} catch (err) {
+  console.error('Auth service startup failed:', err)
+  throw err
 }

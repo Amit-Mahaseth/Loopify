@@ -63,6 +63,10 @@ npm run dev
 
 Open the Vite URL, normally `http://localhost:5173`. The development proxy forwards `/api/auth` to port `3000`, `/api/music` and `/socket.io` to port `3002`. Service configuration and required variables are documented in the backend guide.
 
+## Docker Compose (development)
+
+`docker compose up --build` starts the services and the Vite development server. Configure each backend `.env` first; MongoDB, Redis, and RabbitMQ must be reachable from the containers (container `localhost` does not refer to your host machine). This Compose setup is for development, not production: it runs Vite's dev server and does not provide production hosting, TLS, or a reverse proxy for API and Socket.IO traffic.
+
 ## Guides
 
 - [Frontend setup and architecture](Frontend/README.md)
