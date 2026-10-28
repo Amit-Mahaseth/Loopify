@@ -4,8 +4,8 @@ import { defineConfig, loadEnv } from 'vite'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', 'VITE_')
-  const authTarget = env.VITE_AUTH_API_URL || 'http://localhost:3000'
-  const musicTarget = env.VITE_MUSIC_API_URL || 'http://localhost:3002'
+  const authTarget = env.VITE_AUTH_API_URL || 'http://auth:3000'
+const musicTarget = env.VITE_MUSIC_API_URL || 'http://music:3002'
 
   return {
     plugins: [react()],

@@ -9,7 +9,8 @@ test('GET /api/auth/google/callback creates a Google user and redirects with a t
     _id: 'google-user-123',
     email: googleProfile.emails[0].value,
     googleid: googleProfile.id,
-    Fullname: {firstname: 'Google', lastname: 'User'}
+    Fullname: {firstname: 'Google', lastname: 'User'},
+    role: 'user'
   }
   mocks.findOne.mockResolvedValue(null)
   mocks.create.mockResolvedValue(user)
@@ -22,5 +23,10 @@ test('GET /api/auth/google/callback creates a Google user and redirects with a t
   expect(response.headers.get('location')).toBe('http://localhost:5173')
   expect(response.headers.get('set-cookie')).toContain('token=google-token')
   expect(mocks.authenticate).toHaveBeenCalledWith('google', {session: false})
+  expect(mocks.sign).toHaveBeenCalledWith(expect.objectContaining({
+    id: user._id,
+    email: user.email,
+    role: user.role
+  }), 'test-secret', {expiresIn: '1d'})
   expect(mocks.publish).toHaveBeenCalledWith('user_registered', expect.any(Object))
 })

@@ -35,10 +35,10 @@ services:
       context: ./Frontend
       dockerfile: dockerfile
     ports:
-      - "5173:10000"
+       - "5173:10000"
     environment:
-      VITE_AUTH_API_URL: http://auth:3000
-      VITE_MUSIC_API_URL: http://music:3002
+      AUTH_API_URL: http://auth:3000
+      MUSIC_API_URL: http://music:3002
     depends_on:
       - auth
       - notification

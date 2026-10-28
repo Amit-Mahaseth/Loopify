@@ -14,3 +14,4 @@ build/
 # Logs
 logs/
 *.log
+cookies.txt

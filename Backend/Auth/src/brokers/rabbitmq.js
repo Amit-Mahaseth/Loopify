@@ -1,5 +1,9 @@
 import config from '../config/config.js'
 import amqp from 'amqplib'
+
+import dns from 'node:dns';
+
+dns.setDefaultResultOrder('ipv4first');
 let connection,channel;
 
 

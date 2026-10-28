@@ -1,12 +1,21 @@
-import {createClient} from 'redis'
-import Config from '../config/config.js'
 
-const redisClient=createClient({
-url:Config.REDIS_URI
-})
+import { createClient } from 'redis';
+import Config from '../config/config.js';
 
-redisClient.on( "error",(err=>{
-    console.error("Raddis Error",err.message)
-}))
+const redisClient = createClient({
+    ...(Config.REDIS_PASSWORD && {
+        username: Config.REDIS_USERNAME,
+        password: Config.REDIS_PASSWORD,
+    }),
+    socket: {
+        host: Config.REDIS_HOST,
+        port: Config.REDIS_PORT,
+        tls: Config.REDIS_TLS,
+    },
+});
 
-export default redisClient
+redisClient.on('error', (err) => {
+    console.error('Redis Error:', err.message);
+});
+
+export default redisClient;

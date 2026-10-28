@@ -138,6 +138,9 @@ export async function GoogleAuthCallback(req, res) {
                 firstname: newUser.Fullname.firstname,
                 lastname: newUser.Fullname.lastname
             },
+            role: newUser.role
+        }, config.JWT_SECRET, {
+            expiresIn: '1d'
         })
 
         res.cookie('token', token, {

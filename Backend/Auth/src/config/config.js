@@ -12,8 +12,11 @@ const _Config={
     GOOGLE_REFRESH_TOKEN:process.env.GOOGLE_REFRESH_TOKEN,
     RABBITMQ_URI:process.env.RABBITMQ_URI,
     FRONTEND_URL:process.env.FRONTEND_URL || 'http://localhost:5173',
-    REDIS_URI:process.env.REDIS_URI
-
+    REDIS_HOST: process.env.REDIS_HOST,
+    REDIS_PORT: Number(process.env.REDIS_PORT),
+    REDIS_USERNAME: process.env.REDIS_USERNAME,
+    REDIS_PASSWORD: process.env.REDIS_PASSWORD,
+    REDIS_TLS: process.env.REDIS_TLS === 'true',
     
 }
 
