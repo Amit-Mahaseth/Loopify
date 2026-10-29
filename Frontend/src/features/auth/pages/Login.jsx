@@ -73,7 +73,7 @@ export default function Login() {
     }
   }
   async function HandleGooleAuth() {
-    window.location.href = '/api/auth/google'
+   window.location.href =`${import.meta.env.VITE_AUTH_API_URL}/api/auth/google`;
   }
 
   return (

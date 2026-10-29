@@ -82,7 +82,7 @@ export default function Register() {
   }
 
   function handleGoogleAuth() {
-    window.location.href = '/api/auth/google'
+window.location.href = `${import.meta.env.VITE_AUTH_API_URL}/api/auth/google`;
   }
 
   return (

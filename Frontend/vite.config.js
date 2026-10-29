@@ -11,7 +11,7 @@ const musicTarget = env.VITE_MUSIC_API_URL || 'http://music:3002'
     plugins: [react()],
     server: {
   host: true,
-  allowedHosts: ['loopify-frontend.onrender.com'],
+  allowedHosts: ['loopify-frontend-64kj.onrender.com'],
   proxy: {
         '/api/auth': {
           target: authTarget,
