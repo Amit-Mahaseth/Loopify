@@ -28,8 +28,13 @@ function RequireAuth() {
       setStatus(data.authenticated ? 'authenticated' : 'unauthenticated')
     })
     .catch((error) => {
-      if (error.response?.status === 401) clearTrack()
-      setStatus(error.response?.status === 401 ? 'unauthenticated' : 'error')
+      const isUnauthenticated = error.response?.status === 401
+      // A visitor without a previously established client session should be sent
+      // to login if the status endpoint cannot be reached. The network error page
+      // is reserved for a session that was already authenticated in this browser.
+      const hasSignedInSession = Boolean(localStorage.getItem('loopify_user'))
+      if (isUnauthenticated || !hasSignedInSession) clearTrack()
+      setStatus(isUnauthenticated || !hasSignedInSession ? 'unauthenticated' : 'error')
     }), [clearTrack])
 
   const retryAuthentication = useCallback(() => {
@@ -61,8 +66,8 @@ function RequireAuth() {
         <section className="auth-status-card">
           <span className="auth-status-icon" aria-hidden="true">!</span>
           <p className="auth-status-eyebrow">LOOPIFY ACCOUNT</p>
-          <h1>We couldn’t verify your account</h1>
-          <p className="auth-status-description">Check your connection and try again. Your session may have expired.</p>
+          <h1>Network issue</h1>
+          <p className="auth-status-description">We couldn’t reach Loopify to restore your signed-in session. Check your connection and try again.</p>
           <button className="button auth-status-retry" type="button" onClick={retryAuthentication}>Try again</button>
         </section>
       </main>

@@ -9,6 +9,7 @@ const _Config={
     GOOGLE_CLIENT_SECRET:process.env.GOOGLE_CLIENT_SECRET,
     GOOGLE_CALLBACK_URL:process.env.GOOGLE_CALLBACK_URL,
     EMAIL_USER:process.env.EMAIL_USER,
+    EMAIL_APP_PASSWORD:process.env.EMAIL_APP_PASSWORD,
     GOOGLE_REFRESH_TOKEN:process.env.GOOGLE_REFRESH_TOKEN,
     RABBITMQ_URI:process.env.RABBITMQ_URI,
     FRONTEND_URL:process.env.FRONTEND_URL || 'http://localhost:5173',

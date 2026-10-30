@@ -5,7 +5,7 @@ server {
     index index.html;
 
     location /api/auth/ {
-        proxy_pass ${VITE_AUTH_API_URL};
+        proxy_pass ${AUTH_API_URL};
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -14,7 +14,7 @@ server {
     }
 
     location /api/music/ {
-        proxy_pass ${VITE_MUSIC_API_URL};
+        proxy_pass ${MUSIC_API_URL};
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -23,7 +23,7 @@ server {
     }
 
     location ^~ /socket.io {
-        proxy_pass ${VITE_MUSIC_API_URL};
+        proxy_pass ${MUSIC_API_URL};
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";

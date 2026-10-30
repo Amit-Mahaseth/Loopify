@@ -65,7 +65,23 @@ Open the Vite URL, normally `http://localhost:5173`. The development proxy forwa
 
 ## Docker Compose (development)
 
-`docker compose up --build` starts the services and the Vite development server. Configure each backend `.env` first; MongoDB, Redis, and RabbitMQ must be reachable from the containers (container `localhost` does not refer to your host machine). This Compose setup is for development, not production: it runs Vite's dev server and does not provide production hosting, TLS, or a reverse proxy for API and Socket.IO traffic.
+`docker compose up --build` starts all services. Configure each backend `.env` first; MongoDB, Redis, and RabbitMQ must be reachable from the containers (container `localhost` does not refer to your host machine). The Frontend image serves a production build with Nginx and proxies `/api/auth`, `/api/music`, and `/socket.io`. It uses `PORT=10000`, `AUTH_API_URL=http://auth:3000`, and `MUSIC_API_URL=http://music:3002` locally.
+
+## Deploying
+
+Deploy Auth and Music as separate web services, then deploy Frontend with its Dockerfile. The frontend proxy keeps API, cookie, and Socket.IO traffic on the frontend origin, which is required for reliable HTTP-only session cookies.
+
+Set these environment variables in the deployment dashboard:
+
+| Service | Required deployment settings |
+| --- | --- |
+| Frontend | `AUTH_API_URL` = public Auth service URL; `MUSIC_API_URL` = public Music service URL; `PORT` = platform-provided port |
+| Auth | `FRONTEND_URL` = public Frontend URL; `GOOGLE_CALLBACK_URL` = `https://<frontend-domain>/api/auth/google/callback`; Auth database, JWT, Redis, RabbitMQ, and Google credentials |
+| Music | `FRONTEND_URL` = public Frontend URL; the same `JWT_SECRET` as Auth; Music database and AWS/S3 credentials |
+
+In Google Cloud Console, add the exact `GOOGLE_CALLBACK_URL` above as an authorized redirect URI. Do not use an internal Docker hostname, `localhost`, or the Auth service URL for that callback when the frontend proxy handles browser traffic.
+
+The frontend intentionally uses relative `/api/...` URLs in production. Do not set browser-exposed `VITE_AUTH_API_URL` or `VITE_MUSIC_API_URL` to internal service URLs.
 
 ## Guides
 

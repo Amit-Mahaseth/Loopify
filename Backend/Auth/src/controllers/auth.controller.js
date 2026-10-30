@@ -438,7 +438,18 @@ export async function ForgotPassword(req, res) {
         user.resetPasswordOTPExpires = new Date(Date.now() + 5 * 60 * 1000)
         await user.save()
 
-        await SendEmail(email, 'Loopify Password Reset OTP', `Your Loopify password reset code is ${otp}. It expires in 5 minutes.`)
+        try {
+            await SendEmail(email, 'Loopify Password Reset OTP', `Your Loopify password reset code is ${otp}. It expires in 5 minutes.`)
+        } catch (error) {
+            user.resetPasswordOTP = null
+            user.resetPasswordOTPExpires = null
+            await user.save().catch((cleanupError) => {
+                console.error('Could not clear undelivered password reset code:', cleanupError.message)
+            })
+            console.error('Password reset email failed:', error.message)
+            return res.status(503).json({ success: false, msg: 'Unable to send the reset email. Please check the mail configuration and try again.' })
+        }
+
         return res.status(200).json({ success: true, msg: 'OTP sent to your email.' })
     } catch (error) {
         console.error('Password reset email failed:', error.message)

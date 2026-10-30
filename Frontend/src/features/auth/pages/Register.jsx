@@ -82,7 +82,7 @@ export default function Register() {
   }
 
   function handleGoogleAuth() {
-window.location.href = `${import.meta.env.VITE_AUTH_API_URL}/api/auth/google`;
+    window.location.href = '/api/auth/google'
   }
 
   return (
@@ -91,11 +91,13 @@ window.location.href = `${import.meta.env.VITE_AUTH_API_URL}/api/auth/google`;
         <Link className="brand" to="/">
           <Logo size="sm" />
         </Link>
+        <div className="auth-aside-glow" aria-hidden="true" />
         <div className="aside-copy">
           <span className="eyebrow">MAKE IT YOURS</span>
           <h2>Your soundtrack starts here.</h2>
           <p>Build a listening space that sounds like you, from the first beat to the last.</p>
         </div>
+        <div className="auth-sound-wave" aria-hidden="true"><i /><i /><i /><i /><i /><i /><i /></div>
         <span className="aside-foot">A better way to listen.</span>
       </aside>
 

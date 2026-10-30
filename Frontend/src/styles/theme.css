@@ -1462,3 +1462,135 @@ body:has(.home-shell) .mini-player {
   background: #f3f4f6;
   color: #111827;
 }
+
+/* Authentication refresh: scoped to login and registration only. */
+.login-shell,
+.register-shell {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 76% 14%, rgba(30, 215, 96, .11), transparent 27rem),
+    var(--color-bg);
+}
+
+.login-shell .auth-aside,
+.register-shell .auth-aside {
+  border-right: 1px solid rgba(255, 255, 255, .07);
+}
+
+.auth-aside-glow {
+  position: absolute;
+  width: 25rem;
+  height: 25rem;
+  right: -12rem;
+  bottom: -10rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(30, 215, 96, .24), rgba(30, 215, 96, 0) 68%);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.auth-sound-wave {
+  position: absolute;
+  z-index: 1;
+  right: 11%;
+  bottom: 12%;
+  display: flex;
+  height: 74px;
+  align-items: center;
+  gap: 7px;
+  opacity: .82;
+}
+
+.auth-sound-wave i {
+  display: block;
+  width: 5px;
+  height: 24%;
+  border-radius: 999px;
+  background: linear-gradient(#9af6bb, var(--color-accent));
+  box-shadow: 0 0 16px rgba(30, 215, 96, .45);
+  animation: auth-wave 1.1s ease-in-out infinite alternate;
+}
+
+.auth-sound-wave i:nth-child(2) { height: 62%; animation-delay: -.65s; }
+.auth-sound-wave i:nth-child(3) { height: 100%; animation-delay: -.25s; }
+.auth-sound-wave i:nth-child(4) { height: 46%; animation-delay: -.85s; }
+.auth-sound-wave i:nth-child(5) { height: 78%; animation-delay: -.45s; }
+.auth-sound-wave i:nth-child(6) { height: 38%; animation-delay: -.15s; }
+.auth-sound-wave i:nth-child(7) { height: 68%; animation-delay: -.75s; }
+
+@keyframes auth-wave {
+  from { transform: scaleY(.55); opacity: .55; }
+  to { transform: scaleY(1); opacity: 1; }
+}
+
+.login-shell .auth-main,
+.register-shell .auth-main {
+  position: relative;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .018), transparent 38%),
+    var(--color-bg);
+}
+
+.auth-theme-toggle {
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .035);
+  color: var(--color-text);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease, transform .2s ease;
+}
+
+.auth-theme-toggle > span:first-child { color: var(--color-accent); font-size: 15px; line-height: 1; }
+.auth-theme-toggle:hover { border-color: var(--color-accent); background: rgba(30, 215, 96, .1); transform: translateY(-1px); }
+.auth-theme-toggle:focus-visible { outline: 3px solid var(--color-accent-glow); outline-offset: 3px; }
+
+.login-shell .auth-card,
+.register-shell .auth-card {
+  padding: 34px;
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, .01));
+  box-shadow: 0 28px 70px rgba(0, 0, 0, .19);
+}
+
+.login-shell .auth-card { width: min(100%, 430px); }
+.register-shell .auth-card { width: min(100%, 470px); }
+.login-shell .auth-legal,
+.register-shell .auth-legal { margin-top: 22px; }
+
+.auth-shell.light-theme .auth-theme-toggle { background: rgba(255, 255, 255, .72); border-color: rgba(15, 122, 85, .16); }
+.auth-shell.light-theme .auth-theme-toggle:hover { background: #fff; border-color: #10b981; }
+.login-shell.light-theme .auth-main,
+.register-shell.light-theme .auth-main { background: linear-gradient(135deg, rgba(255, 255, 255, .58), transparent 38%), var(--color-bg); }
+.login-shell.light-theme .auth-card,
+.register-shell.light-theme .auth-card { border-color: rgba(15, 122, 85, .12); background: rgba(255, 255, 255, .72); box-shadow: 0 24px 60px rgba(15, 23, 42, .08); }
+.auth-shell.light-theme .auth-sound-wave { opacity: .55; }
+
+@media (max-width: 767px) {
+  .auth-theme-toggle { top: 18px; right: 18px; }
+  .login-shell .auth-main,
+  .register-shell .auth-main { padding-top: 86px; }
+  .login-shell .auth-card,
+  .register-shell .auth-card { padding: 26px 22px; border-radius: 20px; }
+}
+
+@media (max-width: 390px) {
+  .auth-theme-toggle > span:last-child { display: none; }
+  .auth-theme-toggle { width: 38px; justify-content: center; padding: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-sound-wave i { animation: none; }
+  .auth-theme-toggle { transition: none; }
+}

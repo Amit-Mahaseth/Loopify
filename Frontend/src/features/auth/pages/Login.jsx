@@ -65,7 +65,9 @@ export default function Login() {
         }
       }
       const message = isAxiosError(error)
-        ? error.response?.data?.message || error.response?.data?.msg || 'Invalid email or password.'
+        ? error.response
+          ? error.response.data?.message || error.response.data?.msg || 'Invalid email or password.'
+          : 'Network issue. Check your connection and try again.'
         : 'Something went wrong. Please try again.'
       setFieldErrors({ password: message })
     } finally {
@@ -73,20 +75,22 @@ export default function Login() {
     }
   }
   async function HandleGooleAuth() {
-   window.location.href =`${import.meta.env.VITE_AUTH_API_URL}/api/auth/google`;
+   window.location.href = '/api/auth/google'
   }
 
   return (
-    <div className={`auth-shell ${theme}-theme`}>
+    <div className={`auth-shell login-shell ${theme}-theme`}>
       <aside className="auth-aside">
         <Link className="brand" to="/">
           <Logo size="sm" />
         </Link>
+        <div className="auth-aside-glow" aria-hidden="true" />
         <div className="aside-copy">
           <span className="eyebrow">YOUR SOUND, IN MOTION</span>
           <h2>Find the rhythm that follows you.</h2>
           <p>Pick up where you left off and let your next favorite track find you.</p>
         </div>
+        <div className="auth-sound-wave" aria-hidden="true"><i /><i /><i /><i /><i /><i /><i /></div>
         <span className="aside-foot">A better way to listen.</span>
       </aside>
 

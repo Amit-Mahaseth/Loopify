@@ -3,13 +3,18 @@ import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  auth: {
-    type: 'OAuth2',
-    user: config.EMAIL_USER,
-    clientId: config.GOOGLE_CLIENT_ID,
-    clientSecret: config.GOOGLE_CLIENT_SECRET,
-    refreshToken: config.GOOGLE_REFRESH_TOKEN,
-  },
+  auth: config.EMAIL_APP_PASSWORD
+    ? {
+        user: config.EMAIL_USER,
+        pass: config.EMAIL_APP_PASSWORD,
+      }
+    : {
+        type: 'OAuth2',
+        user: config.EMAIL_USER,
+        clientId: config.GOOGLE_CLIENT_ID,
+        clientSecret: config.GOOGLE_CLIENT_SECRET,
+        refreshToken: config.GOOGLE_REFRESH_TOKEN,
+      },
 });
 
 // Function to send email

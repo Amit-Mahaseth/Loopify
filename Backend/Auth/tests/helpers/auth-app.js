@@ -8,7 +8,8 @@ export const mocks = {
   compare: jest.fn(),
   sign: jest.fn(),
   publish: jest.fn(),
-  authenticate: jest.fn()
+  authenticate: jest.fn(),
+  sendEmail: jest.fn()
 }
 
 export const googleProfile = {
@@ -21,6 +22,7 @@ process.env.JWT_SECRET = 'test-secret'
 process.env.GOOGLE_CLIENT_ID = 'test-client-id'
 process.env.GOOGLE_CLIENT_SECRET = 'test-client-secret'
 process.env.GOOGLE_CALLBACK_URL = 'http://localhost/api/auth/google/callback'
+process.env.FRONTEND_URL = 'http://localhost:5173'
 
 await jest.unstable_mockModule('../../src/models/auth.models.js', () => ({
   default: {findOne: mocks.findOne, create: mocks.create}
@@ -33,6 +35,9 @@ await jest.unstable_mockModule('jsonwebtoken', () => ({
 }))
 await jest.unstable_mockModule('../../src/brokers/rabbitmq.js', () => ({
   PublishToQueue: mocks.publish
+}))
+await jest.unstable_mockModule('../../src/utils/email.js', () => ({
+  default: mocks.sendEmail
 }))
 
 const passportModule = await import('passport')

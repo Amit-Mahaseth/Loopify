@@ -37,6 +37,7 @@ services:
     ports:
        - "5173:10000"
     environment:
+      PORT: 10000
       AUTH_API_URL: http://auth:3000
       MUSIC_API_URL: http://music:3002
     depends_on:

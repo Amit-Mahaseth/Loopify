@@ -639,7 +639,7 @@ export default function Home() {
           </div>
           <div className="topbar-actions">
             <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`} title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
-              <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={17} /><span>{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+              <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={17} />
             </button>
             {isLoggedIn
               ? <>
